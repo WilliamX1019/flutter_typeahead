@@ -40,14 +40,12 @@ class SuggestionsController<T> extends ChangeNotifier {
   }
 
   /// The current suggestions of the suggestions box.
-  List<T>? get suggestions =>
-      _suggestions == null ? null : List.of(_suggestions!);
+  List<T>? get suggestions => _suggestions != null ? 
+      List.unmodifiable(_suggestions!) : null; // 使用不可变列表而不是每次创建新副本
+  
   set suggestions(List<T>? value) {
     if (listEquals(_suggestions, value)) return;
-    if (value != null) {
-      value = List.of(value);
-    }
-    _suggestions = value;
+    _suggestions = value != null ? List.of(value) : null; // 只在设置时创建一次副本
     notifyListeners();
   }
 
